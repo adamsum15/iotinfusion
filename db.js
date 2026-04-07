@@ -1,21 +1,22 @@
 const mysql = require('mysql');
-require('dotenv').config(); // Memastikan .env terbaca, jika belum dilakukan di tempat lain
+require('dotenv').config();
 
-// Membuat koneksi ke database
-const db = mysql.createConnection({
+const db = mysql.createPool({
+    connectionLimit: 10,
     host: process.env.DATABASE_HOST,
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME
 });
 
-// Membuka koneksi dan menangani error
-db.connect((error) => {
-    if (error) {
-        console.error('Koneksi ke database gagal:', error);
-        return;
+// Test koneksi
+db.getConnection((err, connection) => {
+    if (err) {
+        console.error('Koneksi database gagal:', err);
+    } else {
+        console.log('Terhubung ke database');
+        connection.release(); // penting!
     }
-    console.log('Terhubung ke database');
 });
 
-module.exports = db; // Mengekspor koneksi
+module.exports = db;

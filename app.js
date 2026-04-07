@@ -1,7 +1,6 @@
 const express = require("express");
 const session = require('express-session');
 const path = require("path");
-const mqtt = require('mqtt');
 const mqttService = require("./services/mqttserver");
 const cookieParser = require("cookie-parser");
 const app = express();
